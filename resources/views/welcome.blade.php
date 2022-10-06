@@ -3,3 +3,4 @@
 @section('content')
     <livewire:welcome></livewire:welcome>
 @endsection
+
