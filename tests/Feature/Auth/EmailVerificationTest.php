@@ -3,10 +3,13 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Verified;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
@@ -23,6 +26,20 @@ class EmailVerificationTest extends TestCase
         $response = $this->actingAs($user)->get('/verify-email');
 
         $response->assertStatus(200);
+    }
+
+    public function test_can_send_email_verification(): void
+    {
+        /** @var $user MustVerifyEmail */
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+
+        Notification::fake();
+
+        $user->sendEmailVerificationNotification();
+
+        Notification::assertSentTo($user, VerifyEmail::class);
     }
 
     public function test_email_can_be_verified()
