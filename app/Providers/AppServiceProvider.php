@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         /**
          * Required for (Spatie) Laravel Permissions package.
-         * 
+         *
          * https://spatie.be/docs/laravel-permission/v5/prerequisites#content-schema-limitation-in-mysql
          */
         Schema::defaultStringLength(125);
